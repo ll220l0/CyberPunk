@@ -20,7 +20,6 @@ class Home(LoginRequiredMixin, ListView):
     template_name = 'photo_blog/home.html'
     paginate_by = 10
 
-# Queryset returned is posts with authors the authenticated user follows.
     def get_queryset(self):
         following = []
         pk = self.request.user
