@@ -1,0 +1,79 @@
+{% extends "photo_blog/base.html" %}
+{% block content %}
+
+<script type="text/javascript">
+  window.USER_LIKE_URL = "{% url 'photo_blog-post_like_api' post.id %}";
+</script>
+<div style="border-radius: 20px; margin-top: 10px; padding: 15px;" class="content login">
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <div>
+          <img class='rounded-circle article-img crop'src="{{ post.author.profile.image.url }}" height="50" width="50">
+          <a style="text-decoration: none; color: white;" class="black-link" href="{% url 'photo_blog-profile' post.author.username %}">{{ post.author }}</a>
+          {% if post.location %}
+          <small style="color: white; margin-left: 5px;">{{post.location}}</small>
+          {% endif %}
+        </div>
+        <img style="width: 100%; margin-top: 10px;" src="{{ post.photo.url }}">
+        {% if user in post.likes.all %}
+          <a class="ml-1" id=imageElement{{post.id}}  onclick="toggleLike({{post.id}})"><img src="/media/nav_buttons/liked.svg" height="17" width="17"></a>
+        {% else %}
+          <a class="ml-1" id=imageElement{{post.id}}  onclick="toggleLike({{post.id}})"><img src="/media/nav_buttons/unliked.svg" height="17" width="17"></a>
+        {% endif %}
+        <a href="{% url 'photo_blog-comment' post.id %}"><img src="/media/nav_buttons/comment.svg" height="17" width="17"></a></br>
+        {% if post.likes.count != 0 %}
+          <a style="color: white; text-decoration: none; margin-left: 2px;" id=likeCount{{post.id}} class="black-link-plain mb-3" href="{% url 'photo_blog-post_likes' post.id %}">{{post.likes.count}} likes</a>
+        {% endif %}
+        <a style="color: white; text-decoration: none; margin-left: 2px;" id=likeCount{{post.id}} class="black-link-plain mb-3" href="{% url 'photo_blog-post_likes' post.id %}"></a>
+        <p>
+          <a style="color: rgba(255, 255, 0, 0.787); text-decoration: none; margin-left: 2px;" class="black-link" href="{% url 'photo_blog-profile' post.author.username %}">{{ post.author }}</a>
+          <span style="color: white;">
+            {{ post.caption }}
+          </span>
+        </p>
+      </div>
+      <div style="color: white;" class="comment">
+        <div style="height:100px;width:100%;overflow:auto;scrollbar-width: none;">
+          {% for comment in post.comments.all %}
+          <p>
+            <a style="text-decoration: none; color: white;" class="black-link" href="{% url 'photo_blog-profile' comment.author.username %}">{{ comment.author }}</a>
+            {{ comment.text }}
+            {% if comment.author == user %}
+              <a href="{% url 'photo_blog-delete_comment' comment.id %}"><img src="/media/nav_buttons/trash.png" height="20" width="20"></a>
+            {% endif %}
+            </br><small style="margin-left: 2px;">{{ comment.date_posted|date:'F d, Y' }}</small>
+          </p>
+            {% empty %}
+            <span style="color: yellow;">There are no comments on this post.</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div style="margin-top: 5px; margin-left: 2px;">
+        <a style="color: yellow;" href="{% url 'photo_blog-comment' post.id %}">Add Comment</a>
+      </div>
+      <div>
+        <small style="color: white; margin-left: 2px;">{{ post.date_posted|date:'F d, Y' }}</small>
+      </div>
+      <div>
+        {% if post.author == user %}
+        <!-- <a class ="btn" href="{% url 'photo_blog-delete' post.id %}">Delete Post</a>
+        <a class ="btn" href="{% url 'photo_blog-update' post.id %}">Edit Post</a> -->
+        <form class="center mt-5">  
+          <button type="submit" formaction="{% url 'photo_blog-delete' post.id %}" class="login_btn prof">
+            <span class="btn__content">delete</span>
+            <span class="btn__glitch"></span>
+            <span class="btn__label">r21</span>
+          </button>
+          <button type="submit" formaction="{% url 'photo_blog-update' post.id %}" class="login_btn prof">
+            <span class="btn__content">edit</span>
+            <span class="btn__glitch"></span>
+            <span class="btn__label">r22</span>
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "photo_blog/base.html" %}
+{% load material_form %}
+{% load photo_blog_tags %}
+{% block content %}
+
+<form  method="GET" class="login mt-1">
+  <input type="text" placeholder="Search" name="q" value="{{ request.GET.q }}">
+  <button type="submit" class="login_btn prof">
+    <span class="btn__content">search</span>
+    <span class="btn__glitch"></span>
+    <span class="btn__label">r24</span>
+  </button>
+</form>
+
+{% if request.GET.q %}
+  {% if request.GET.q|startswith:'#'  %}
+    {% for post in posts reversed %}
+      <article style="border-radius: 20px; padding: 15px;" class="media content-section mt-1 login">
+        <div class="media-body">
+          <div class="article-metadata">
+            <div>
+              <a href="{% url 'photo_blog-profile' post.author.username %}"><img class='rounded-circle article-img crop logo_prof' src="{{ post.author.profile.image.url }}" height="45" width="45"></a>
+              <a style="text-decoration: none; color:white;" class="ml-1" href="{% url 'photo_blog-profile' post.author.username %}"><b>{{ post.author }}</b></a>
+              {% if post.location %}
+              <small>{{post.location}}</small>
+              {% endif %}
+            </div>
+            <img style="width: 100%; margin-top: 10px;" src="{{ post.photo.url }}">
+            {% if user in post.likes.all %}
+              <a class='ml-1' id=imageElement{{post.id}}  onclick="toggleLike({{post.id}})"><img src="/media/nav_buttons/liked.svg" height="17" width="17"></a>
+            {% else %}
+              <a class='ml-1' id=imageElement{{post.id}}  onclick="toggleLike({{post.id}})"><img src="/media/nav_buttons/unliked.svg" height="17" width="17"></a>
+            {% endif %}
+            <a href="{% url 'photo_blog-comment' post.id %}"><img src="/media/nav_buttons/comment.svg" height="17" width="17"></a></br>
+            {% if post.likes.count != 0 %}
+              <a style="color: white; text-decoration: none; margin-left: 2px;"  id=likeCount{{post.id}} class="black-link-plain mb-3" href="{% url 'photo_blog-post_likes' post.id %}">{{post.likes.count}} likes</a>
+            {% endif %}
+            <a style="color: white; text-decoration: none; margin-left: 2px;" id=likeCount{{post.id}} class="black-link-plain mb-3" href="{% url 'photo_blog-post_likes' post.id %}"></a>
+            <p style="color: white;">
+              <a style="text-decoration: none; color: rgba(255, 255, 0, 0.787); margin-left: 2px;" class="black-link" href="{% url 'photo_blog-profile' post.author.username %}">{{ post.author }}</a>
+              {{ post.caption }}
+            </p>
+            {% if post.comments.all %}
+            <p style="color: white;">
+              <a style="text-decoration: none; color: white; margin-left: 2px;" class="black-link" href="{% url 'photo_blog-profile' post.comments.first.author.username %}"><b>{{ post.comments.first.author }}</b></a>
+              {{ post.comments.first|truncatechars:50 }}
+            </p>
+            {% endif %}
+            {% if post.comments.all %}
+            <a style="text-decoration: none; color: yellow; margin-left: 2px;" href="{% url 'photo_blog-detail' post.id %}"> View all {{ post.comments.count }} comments</a>
+            {% endif %}
+            <p style="margin-top: 5px; margin-left: 2px; color: white;"><small>{{ post.date_posted|date:'F d, Y' }}</small></p>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  {% else %}
+    
+    <div  class="login mt-1">
+      {% for profile in posts %}
+        <div class="mb-2">
+          <a href="{% url 'photo_blog-profile' profile.user.username %}"><img class='rounded-circle article-img mt-1' src="{{ profile.image.url }}" height="50" width="50"></a>
+          <a style="text-decoration: none;color:white;" class="black-link" href="{% url 'photo_blog-profile' profile.user.username %}">{{ profile.user }}</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

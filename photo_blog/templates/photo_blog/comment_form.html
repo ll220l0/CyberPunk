@@ -1,0 +1,21 @@
+{% extends "photo_blog/base.html" %}
+{% load material_form %}
+{% block content %}
+
+
+<div class="login mt-1">
+  <form class='active' method="POST">
+      {% csrf_token %}
+      <center>
+        <img src="/media/logo.png" height="90px" class="center img">
+      </center>
+      <fieldset>
+        {% form form=form %}{% endform %}
+        <center>
+          <button style="background-color: yellow;color: black; margin-top: 10px;" type="submit" name="_submit" class="btn">Post</button>
+        </center>
+      </fieldset>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "photo_blog/base.html" %}
+{% load material_form %}
+{% block content %}
+
+<div class="login">
+  <img src="/media/logo.png" height="90px" class="center img">
+  <div>
+    <form class="active" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+          {% form form=form %}{% endform %}
+          <button type="submit" name="_submit" class="login_btn center">
+            <span class="btn__content">post</span>
+            <span class="btn__glitch"></span>
+            <span class="btn__label">r24</span>
+          </button>
+        </fieldset>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

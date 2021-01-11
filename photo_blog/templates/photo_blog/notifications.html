@@ -1,0 +1,61 @@
+{% extends "photo_blog/base.html" %}
+{% block content %}
+
+
+{% if object_list %}
+  <div style="color: white;" class="content login mt-0">
+    <center>
+      <img src="/media/logo.png" height="90px" class="center img">
+    </center>
+  {% for notification in object_list reversed %}
+    {% if notification.comment %}
+      {% if notification.comment.post.author == user %}
+        <div class="media-body">
+          <div class="article-metadata mb-3">
+            <a href="{% url 'photo_blog-profile' notification.comment.author.username %}"><img class='rounded-circle article-img crop'src="{{ notification.comment.author.profile.image.url }}" height="50" width="50"></a>
+            <a style="text-decoration: none; color: yellow;" class="black-link" href="{% url 'photo_blog-profile' notification.comment.author.username %}">{{ notification.comment.author }}</a>
+            commented 
+
+              <b>"{{ notification.comment.text }}"</b>
+              on your
+              <a style="text-decoration: none; color: yellow;" class="black-link" href="{% url 'photo_blog-detail' notification.post.id %}">post.</a>
+
+            </br>
+          </div>
+        </div>
+      {% endif %}
+    {% elif notification.liked %}
+      {% if notification.user != user %}
+        {% if notification.post.author == user %}
+          <div class="media-body">
+            <div class="article-metadata mb-3">
+              <img class='rounded-circle article-img crop'src="{{ notification.user.profile.image.url }}" height="50" width="50">
+              <a style="text-decoration: none; color: yellow;" class="black-link" href="{% url 'photo_blog-profile' notification.user.username %}">{{ notification.user }}</a>
+              liked your
+              <a style="text-decoration: none; color: yellow;" class="black-link" href="{% url 'photo_blog-detail' notification.post.id %}">post.</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% elif notification.followed %}
+      {% if notification.user != user %}
+        {% if notification.profile.user == user %}
+          <div class="media-body">
+            <div class="article-metadata mb-3">
+              <img class='rounded-circle article-img crop'src="{{ notification.user.profile.image.url }}" height="50" width="50">
+              <a style="text-decoration: none; color: yellow;" class="black-link" href="{% url 'photo_blog-profile' notification.user.username %}">{{ notification.user }}</a>
+              started following you.
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  </div>
+{% else %}
+  <center>
+    You don't have any notifications yet.
+  </center>
+{% endif %}
+
+{% endblock %}
