@@ -1,0 +1,20 @@
+{% extends "photo_blog/base.html" %}
+{% block content %}
+
+<div class="login logout_mes">
+  <center>
+    <img src="/media/logo.png" height="90px" class="center img">
+    <h7 id='logut_mes'>You have successfully been logged out.</h7>
+    <br>
+    <br>
+    <form action="{% url 'login' %}">
+      <button type="submit" name="_submit" class="login_btn center">
+        <span class="btn__content">login</span>
+        <span class="btn__glitch"></span>
+        <span class="btn__label">r25</span>
+      </button>
+    </form>
+</center>
+</div>
+
+{% endblock %}

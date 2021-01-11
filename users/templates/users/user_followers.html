@@ -1,0 +1,17 @@
+{% extends "photo_blog/base.html" %}
+{% load material_form %}
+{% block content %}
+
+<div class="login">
+  <center>
+    <img src="/media/logo.png" height="90px" class="center img">
+  </center>
+  {% for user in profile.followers.all %}
+    <div class="mb-2">
+      <a href="{% url 'photo_blog-profile' user %}"><img class='rounded-circle article-img mt-1 crop' src="{{ user.profile.image.url }}" height="50" width="50"></a>
+      <a style="text-decoration: none; color: white;" class="black-link" href="{% url 'photo_blog-profile' user %}">{{ user }}</a>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

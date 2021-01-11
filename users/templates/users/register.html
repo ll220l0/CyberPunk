@@ -1,0 +1,26 @@
+{% extends "photo_blog/base.html" %}
+{% load material_form %}
+{% block content %}
+
+<div class="login sig">
+  <form method="POST">
+      {% csrf_token %}
+      <img src="/media/logo.png" height="90px" class="center img_reg">
+      <fieldset>
+        {% form form=form %}{% endform %}
+        <button type="submit" name="_submit" class="login_btn center">
+          <span class="btn__content">Signup</span>
+          <span class="btn__glitch"></span>
+          <span class="btn__label">r25</span>
+        </button>
+        <br>
+        <br>
+        <div class="reg center">
+          <span>Have an account?</span>
+          <a href="{% url 'login' %}">Login</a>
+        </div>
+      </fieldset>
+  </form>
+</div>
+
+{% endblock %}
