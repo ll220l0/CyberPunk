@@ -1,0 +1,40 @@
+{% extends "photo_blog/base.html" %}
+{% block content %}
+
+<div class="content login mt-1">
+  <center>
+    <h4><a style="text-decoration: none; color: yellow;" class="black-link-plain" href="{% url 'photo_blog-profile' view.kwargs.username %}">{{ view.kwargs.username }}</a></h4>
+  </center>
+  <center style="text-decoration: none;color: yellow;">
+    <a style="text-decoration: none;color: white;" href="{% url 'direct_messages-inbox' %}">Inbox</a>
+    |
+    <a style="text-decoration: none;color: white;" href="{% url 'direct_messages-new' %}">New Message</a>
+  </center>
+</br>
+  </br>
+  {% if object_list %}
+    <div style="height:400px;width:100%;overflow:auto;scrollbar-width: none;">
+      {% for direct_message in object_list %}
+        <a href="{% url 'photo_blog-profile' direct_message.sender.username %}"><img class='rounded-circle article-img mt-1 crop' src="{{ direct_message.sender.profile.image.url }}" height="50" width="50"></a>
+        <a style="text-decoration: none; color: white;" class="black-link" href="{% url 'photo_blog-profile' direct_message.sender.username %}">{{ direct_message.sender }}</a>
+        <span style="color: rgba(255, 255, 255, 0.685)" class="ml-3">{{ direct_message.date_sent }}</span>
+        </br>
+        <a style="color: rgb(0, 255, 242); margin-left: 55px; text-decoration: none;" href="{% url 'direct_messages-detail' direct_message.id %}"><b>{{ direct_message.content }}</b></a>
+        </br>
+        {% if direct_message.sender == user %}
+          <a style="margin-left: 40px;" class="nav-item nav-link" href="{% url 'direct_messages-delete' direct_message.id %}"><img src="/media/nav_buttons/trash.png" height="20" width="20"></a>
+          </br>
+        {% else %}
+          </br>
+          </br>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+      <center>
+        <span style="color: yellow;">You haven't sent or received any messages yet.</span>
+      </center>
+  {% endif %}
+</div>
+
+{% endblock %}

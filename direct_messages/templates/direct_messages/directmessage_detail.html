@@ -1,0 +1,13 @@
+{% extends "photo_blog/base.html" %}
+{% block content %}
+
+
+<div class="content login mt-1">
+  <a href="{% url 'photo_blog-profile' object.sender.username %}"><img class='rounded-circle article-img mt-1' src="{{ object.sender.profile.image.url }}" height="50" width="50"></a>
+  <a class="ml-2" style="text-decoration: none; color: white;" class="black-link" href="{% url 'photo_blog-profile' object.sender.username %}"><b>{{ object.sender }}</b></a>
+  <span class="ml-3" style="color: rgba(255, 255, 255, 0.685)">{{ object.date_sent }}</span>
+  </br>
+  <span style="color: rgb(0, 255, 242); margin-left: 61px; text-decoration: none;">{{object.content}}</span>
+</div>
+
+{% endblock %}
