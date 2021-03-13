@@ -8,7 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     website = models.CharField(max_length=100, null=True, blank=True)
     bio = models.CharField(max_length=150, null=True, blank=True)
-    image = models.ImageField(default='default.png', upload_to='media')
+    image = models.ImageField(default='default.png', upload_to='media/default.png')
     followers = models.ManyToManyField(User, blank=True, related_name='user_followers')
 
     def __str__(self):
